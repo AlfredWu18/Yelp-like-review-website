@@ -1,0 +1,8 @@
+<h1>scenic spot page</h1>
+
+<% scenicspots.forEach(function(scenicspot){ %>
+    <div>
+        <h4><%= scenicspot.name %></h4>
+        <img src="<%= scenicspot.image %>">
+    </div>
+<% }); %>
