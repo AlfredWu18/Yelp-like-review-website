@@ -1,8 +1,12 @@
-<h1>scenic spot page</h1>
+<% include partials/header%>
 
+<h1>scenic spot page</h1>
+<a href="/scenicspots/new">create new scenic spots</a>
 <% scenicspots.forEach(function(scenicspot){ %>
     <div>
         <h4><%= scenicspot.name %></h4>
         <img src="<%= scenicspot.image %>">
     </div>
 <% }); %>
+
+<% include partials/footer%>
