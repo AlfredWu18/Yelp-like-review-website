@@ -1,22 +1,21 @@
 var express             = require("express"),
     app                 = express(),
     bodyParser          = require("body-parser"),
-    mongoose            = require("mongoose");
-
+    mongoose            = require("mongoose"),
+    scenicspot          = require("./models/scenicspot"),
+    seedDB              = require("./seeds"),
+    comment             = require("./models/comment")
+    
 mongoose.connect("mongodb://localhost/yelp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
+seedDB();
 
 app.get("/", function(req, res) {
     res.render("landing");
 })
 
-var spotSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-var scenicspot = mongoose.model("scenicspot", spotSchema);
 
 // scenicspot.create({
 //     name: "2", image: "https://farm6.staticflickr.com/5641/22403300756_a413f3fd59.jpg",
@@ -41,13 +40,13 @@ app.get("/scenicspots", function(req, res) {
         if (err) {
             console.log();
         } else {
-            res.render("index", {scenicspots:allScenicspot});
+            res.render("scenicspots/index", {scenicspots:allScenicspot});
         }
     });
 });
 
 app.get("/scenicspots/new", function(req, res){
-    res.render("new");
+    res.render("scenicspots/new");
 })
 
 app.post("/scenicspots", function(req, res){
@@ -67,14 +66,46 @@ app.post("/scenicspots", function(req, res){
 
 app.get("/scenicspots/:id", function(req, res) {
     // res.send("this will be");
-    scenicspot.findById(req.params.id, function(err, foundScenicspot) {
+    scenicspot.findById(req.params.id).populate("comments").exec(function(err, foundScenicspot) {
         if(err) {
             console.log(err);
         } else {
-            res.render("show", {scenicspot: foundScenicspot});
+            // console.log(foundScenicspot);
+            res.render("scenicspots/show", {scenicspot: foundScenicspot});
+        }
+    });
+});
+
+app.get("/scenicspots/:id/comments/new", function(req, res) {
+    scenicspot.findById(req.params.id, function(err, scenicspot) {
+        // alert("alfred");
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("comments/new", {scenicspot: scenicspot});
         }
     })
-})
+});
+
+
+app.post("/scenicspots/:id/comments", function(req, res) {
+    scenicspot.findById(req.params.id, function(err, scenicspot) {
+        if (err) {
+            console.log(err);
+            res.redirect("/scenicspots");
+        } else {
+            comment.create(req.body.comment, function(err, comment) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    scenicspot.comments.push(comment);
+                    scenicspot.save();
+                    res.redirect("/scenicspots/" + scenicspot._id);
+                }
+            })
+        }
+    })
+});
 
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("The server has started!");
