@@ -19,7 +19,10 @@ var commentRoutes       = require("./routes/comments"),
 // mongoose.connect("mongodb://localhost/yelp");
 // mongoose.Promise = require('bluebird');     //  need 
 mongoose.Promise = global.Promise
-var promise = mongoose.connect('mongodb://localhost/yelp', {
+// var promise = mongoose.connect('mongodb://localhost/yelp', {
+//   useMongoClient: true,
+// });
+var promise = mongoose.connect("mongodb://alfred:yelp@ds161016.mlab.com:61016/yelp", {
   useMongoClient: true,
 });
 app.use(bodyParser.urlencoded({extended: true}));
