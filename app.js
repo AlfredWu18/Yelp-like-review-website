@@ -22,8 +22,8 @@ mongoose.Promise = global.Promise
 // var promise = mongoose.connect('mongodb://localhost/yelp', {
 //   useMongoClient: true,
 // });
-// "mongodb://alfred:yelp@ds161016.mlab.com:61016/yelp"
-var promise = mongoose.connect(process.env.DATABASEURL, {
+var url = process.env.DATABASEURL || 'mongodb://localhost/yelp';
+var promise = mongoose.connect(url, {
   useMongoClient: true,
 });
 app.use(bodyParser.urlencoded({extended: true}));
