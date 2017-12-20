@@ -17,12 +17,13 @@ var commentRoutes       = require("./routes/comments"),
     indexRoutes         = require("./routes/index");
     
 // mongoose.connect("mongodb://localhost/yelp");
-// mongoose.Promise = require('bluebird');     //  need 
+// mongoose.Promise = require('bluebird');     //  need
 mongoose.Promise = global.Promise
 // var promise = mongoose.connect('mongodb://localhost/yelp', {
 //   useMongoClient: true,
 // });
-var promise = mongoose.connect("mongodb://alfred:yelp@ds161016.mlab.com:61016/yelp", {
+// "mongodb://alfred:yelp@ds161016.mlab.com:61016/yelp"
+var promise = mongoose.connect(process.env.DATABASEURL, {
   useMongoClient: true,
 });
 app.use(bodyParser.urlencoded({extended: true}));
