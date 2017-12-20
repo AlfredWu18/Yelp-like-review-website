@@ -16,12 +16,7 @@ var commentRoutes       = require("./routes/comments"),
     scenicspotRoutes    = require("./routes/scenicspots"),
     indexRoutes         = require("./routes/index");
     
-// mongoose.connect("mongodb://localhost/yelp");
-// mongoose.Promise = require('bluebird');     //  need
 mongoose.Promise = global.Promise
-// var promise = mongoose.connect('mongodb://localhost/yelp', {
-//   useMongoClient: true,
-// });
 var url = process.env.DATABASEURL || 'mongodb://localhost/yelp';
 var promise = mongoose.connect(url, {
   useMongoClient: true,
