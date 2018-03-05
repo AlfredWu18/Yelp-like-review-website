@@ -27,7 +27,6 @@ app.use(express.static(__dirname + "/public"));
 app.use(flash());
 // seedDB();
 
-
 //passport configuration
 app.use(require("express-session")({
     secret: "Yu is #1",

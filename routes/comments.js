@@ -68,5 +68,4 @@ router.post("/:comment_id", middleware.checkCommentOwnership, function(req, res)
 });
 
 
-
 module.exports = router;
